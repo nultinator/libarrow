@@ -124,7 +124,7 @@ pub fn decode_extended_full_viewing_key(
 ///
 /// assert_eq!(
 ///     encode_payment_address(HRP_SAPLING_PAYMENT_ADDRESS, &pa),
-///     "ztestsapling1qqqqqqqqqqqqqqqqqqcguyvaw2vjk4sdyeg0lc970u659lvhqq7t0np6hlup5lusxle75ss7jnk",
+///     "ytestsapling1qqqqqqqqqqqqqqqqqrjq05nyfku05msvu49mawhg6kr0wwljahypwyk2h88z6975u563j9k7cxg",
 /// );
 /// ```
 pub fn encode_payment_address(hrp: &str, addr: &PaymentAddress) -> String {
@@ -162,7 +162,7 @@ pub fn encode_payment_address(hrp: &str, addr: &PaymentAddress) -> String {
 /// assert_eq!(
 ///     decode_payment_address(
 ///         HRP_SAPLING_PAYMENT_ADDRESS,
-///         "ztestsapling1qqqqqqqqqqqqqqqqqqcguyvaw2vjk4sdyeg0lc970u659lvhqq7t0np6hlup5lusxle75ss7jnk",
+///         "ytestsapling1qqqqqqqqqqqqqqqqqrjq05nyfku05msvu49mawhg6kr0wwljahypwyk2h88z6975u563j9k7cxg",
 ///     ),
 ///     Ok(Some(pa)),
 /// );
@@ -198,7 +198,7 @@ pub fn decode_payment_address(hrp: &str, s: &str) -> Result<Option<PaymentAddres
 ///         &B58_SCRIPT_ADDRESS_PREFIX,
 ///         &TransparentAddress::PublicKey([0; 20]),
 ///     ),
-///     "tm9iMLAuYMzJ6jtFLcA7rzUmfreGuKvr7Ma",
+///     "smD3VYXz481ZvyUAs5k9yARaPE1B4ySFMDJ",
 /// );
 ///
 /// assert_eq!(
@@ -207,7 +207,7 @@ pub fn decode_payment_address(hrp: &str, s: &str) -> Result<Option<PaymentAddres
 ///         &B58_SCRIPT_ADDRESS_PREFIX,
 ///         &TransparentAddress::Script([0; 20]),
 ///     ),
-///     "t26YoyZ1iPgiMEWL4zGUm74eVWfhyDMXzY2",
+///     "smD3VYXz481ZvyUAs5k9yARaPE1B4ySFMDJ",
 /// );
 /// ```
 pub fn encode_transparent_address(
@@ -249,7 +249,7 @@ pub fn encode_transparent_address(
 ///     decode_transparent_address(
 ///         &B58_PUBKEY_ADDRESS_PREFIX,
 ///         &B58_SCRIPT_ADDRESS_PREFIX,
-///         "tm9iMLAuYMzJ6jtFLcA7rzUmfreGuKvr7Ma",
+///         "smD3VYXz481ZvyUAs5k9yARaPE1B4ySFMDJ",
 ///     ),
 ///     Ok(Some(TransparentAddress::PublicKey([0; 20]))),
 /// );
@@ -393,9 +393,9 @@ mod tests {
                 .unwrap();
 
         let encoded_main =
-            "zs1qqqqqqqqqqqqqqqqqqcguyvaw2vjk4sdyeg0lc970u659lvhqq7t0np6hlup5lusxle75c8v35z";
+            "ys1qqqqqqqqqqqqqqqqqrjq05nyfku05msvu49mawhg6kr0wwljahypwyk2h88z6975u563j87stas";
         let encoded_test =
-            "ztestsapling1qqqqqqqqqqqqqqqqqqcguyvaw2vjk4sdyeg0lc970u659lvhqq7t0np6hlup5lusxle75ss7jnk";
+            "ytestsapling1qqqqqqqqqqqqqqqqqrjq05nyfku05msvu49mawhg6kr0wwljahypwyk2h88z6975u563j9k7cxg";
 
         assert_eq!(
             encode_payment_address(constants::mainnet::HRP_SAPLING_PAYMENT_ADDRESS, &addr),
