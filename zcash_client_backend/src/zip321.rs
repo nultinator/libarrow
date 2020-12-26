@@ -763,13 +763,13 @@ mod tests {
 
     #[test]
     fn test_zip321_parse_simple() {
-        let uri = "zcash:ztestsapling1n65uaftvs2g7075q2x2a04shfk066u3lldzxsrprfrqtzxnhc9ps73v4lhx4l9yfxj46sl0q90k?amount=3768769.02796286&message=";
+        let uri = "zcash:ytestsapling1qqqqqqqqqqqqqqqqqrjq05nyfku05msvu49mawhg6kr0wwljahypwyk2h88z6975u563j9k7cxg?amount=3768769.02796286&message=";
         let parse_result = TransactionRequest::from_uri(&TEST_NETWORK, &uri).unwrap();
 
         let expected = TransactionRequest {
             payments: vec![
                 Payment {
-                    recipient_address: RecipientAddress::Shielded(decode_payment_address(&TEST_NETWORK.hrp_sapling_payment_address(), "ztestsapling1n65uaftvs2g7075q2x2a04shfk066u3lldzxsrprfrqtzxnhc9ps73v4lhx4l9yfxj46sl0q90k").unwrap().unwrap()),
+                    recipient_address: RecipientAddress::Shielded(decode_payment_address(&TEST_NETWORK.hrp_sapling_payment_address(), "ytestsapling1qqqqqqqqqqqqqqqqqrjq05nyfku05msvu49mawhg6kr0wwljahypwyk2h88z6975u563j9k7cxg").unwrap().unwrap()),
                     amount: Amount::from_u64(376876902796286).unwrap(),
                     memo: None,
                     label: None,
@@ -787,7 +787,7 @@ mod tests {
         let req = TransactionRequest {
             payments: vec![
                 Payment {
-                    recipient_address: RecipientAddress::Shielded(decode_payment_address(TEST_NETWORK.hrp_sapling_payment_address(), "ztestsapling1n65uaftvs2g7075q2x2a04shfk066u3lldzxsrprfrqtzxnhc9ps73v4lhx4l9yfxj46sl0q90k").unwrap().unwrap()),
+                    recipient_address: RecipientAddress::Shielded(decode_payment_address(TEST_NETWORK.hrp_sapling_payment_address(), "ytestsapling1qqqqqqqqqqqqqqqqqrjq05nyfku05msvu49mawhg6kr0wwljahypwyk2h88z6975u563j9k7cxg").unwrap().unwrap()),
                     amount: Amount::from_u64(0).unwrap(),
                     memo: None,
                     label: None,
@@ -819,14 +819,14 @@ mod tests {
 
     #[test]
     fn test_zip321_spec_valid_examples() {
-        let valid_1 = "zcash:ztestsapling10yy2ex5dcqkclhc7z7yrnjq2z6feyjad56ptwlfgmy77dmaqqrl9gyhprdx59qgmsnyfska2kez?amount=1&memo=VGhpcyBpcyBhIHNpbXBsZSBtZW1vLg&message=Thank%20you%20for%20your%20purchase";
+        let valid_1 = "zcash:ytestsapling1qqqqqqqqqqqqqqqqqrjq05nyfku05msvu49mawhg6kr0wwljahypwyk2h88z6975u563j9k7cxg?amount=1&memo=VGhpcyBpcyBhIHNpbXBsZSBtZW1vLg&message=Thank%20you%20for%20your%20purchase";
         let v1r = TransactionRequest::from_uri(&TEST_NETWORK, &valid_1).unwrap();
         assert_eq!(
             v1r.payments.get(0).map(|p| p.amount),
             Some(Amount::from_u64(100000000).unwrap())
         );
 
-        let valid_2 = "zcash:?address=tmEZhbWHTpdKMw5it8YDspUXSMGQyFwovpU&amount=123.456&address.1=ztestsapling10yy2ex5dcqkclhc7z7yrnjq2z6feyjad56ptwlfgmy77dmaqqrl9gyhprdx59qgmsnyfska2kez&amount.1=0.789&memo.1=VGhpcyBpcyBhIHVuaWNvZGUgbWVtbyDinKjwn6aE8J-PhvCfjok";
+        let valid_2 = "zcash:?address=smJWoGdqixeFEbhhLrU1TrXGA6wYAUoeG1J&amount=123.456&address.1=ytestsapling1qqqqqqqqqqqqqqqqqrjq05nyfku05msvu49mawhg6kr0wwljahypwyk2h88z6975u563j9k7cxg&amount.1=0.789&memo.1=VGhpcyBpcyBhIHVuaWNvZGUgbWVtbyDinKjwn6aE8J-PhvCfjok";
         let mut v2r = TransactionRequest::from_uri(&TEST_NETWORK, &valid_2).unwrap();
         v2r.normalize(&TEST_NETWORK);
         assert_eq!(
@@ -840,7 +840,7 @@ mod tests {
 
         // valid; amount just less than MAX_MONEY
         // 20999999.99999999
-        let valid_3 = "zcash:ztestsapling10yy2ex5dcqkclhc7z7yrnjq2z6feyjad56ptwlfgmy77dmaqqrl9gyhprdx59qgmsnyfska2kez?amount=20999999.99999999";
+        let valid_3 = "zcash:ytestsapling1qqqqqqqqqqqqqqqqqrjq05nyfku05msvu49mawhg6kr0wwljahypwyk2h88z6975u563j9k7cxg?amount=20999999.99999999";
         let v3r = TransactionRequest::from_uri(&TEST_NETWORK, &valid_3).unwrap();
         assert_eq!(
             v3r.payments.get(0).map(|p| p.amount),
@@ -849,7 +849,7 @@ mod tests {
 
         // valid; MAX_MONEY
         // 21000000
-        let valid_4 = "zcash:ztestsapling10yy2ex5dcqkclhc7z7yrnjq2z6feyjad56ptwlfgmy77dmaqqrl9gyhprdx59qgmsnyfska2kez?amount=21000000";
+        let valid_4 = "zcash:ytestsapling1qqqqqqqqqqqqqqqqqrjq05nyfku05msvu49mawhg6kr0wwljahypwyk2h88z6975u563j9k7cxg?amount=21000000";
         let v4r = TransactionRequest::from_uri(&TEST_NETWORK, &valid_4).unwrap();
         assert_eq!(
             v4r.payments.get(0).map(|p| p.amount),
@@ -865,7 +865,7 @@ mod tests {
         assert!(i1r.is_err());
 
         // invalid; missing `address.1=`
-        let invalid_2 = "zcash:?address=tmEZhbWHTpdKMw5it8YDspUXSMGQyFwovpU&amount=1&amount.1=2&address.2=ztestsapling10yy2ex5dcqkclhc7z7yrnjq2z6feyjad56ptwlfgmy77dmaqqrl9gyhprdx59qgmsnyfska2kez";
+        let invalid_2 = "zcash:?address=smJWoGdqixeFEbhhLrU1TrXGA6wYAUoeG1J&amount=1&amount.1=2&address.2=ztestsapling10yy2ex5dcqkclhc7z7yrnjq2z6feyjad56ptwlfgmy77dmaqqrl9gyhprdx59qgmsnyfska2kez";
         let i2r = TransactionRequest::from_uri(&TEST_NETWORK, &invalid_2);
         assert!(i2r.is_err());
 
@@ -876,18 +876,18 @@ mod tests {
 
         // invalid; duplicate `amount=` field
         let invalid_4 =
-            "zcash:?amount=1.234&amount=2.345&address=tmEZhbWHTpdKMw5it8YDspUXSMGQyFwovpU";
+            "zcash:?amount=1.234&amount=2.345&address=smJWoGdqixeFEbhhLrU1TrXGA6wYAUoeG1J";
         let i4r = TransactionRequest::from_uri(&TEST_NETWORK, &invalid_4);
         assert!(i4r.is_err());
 
         // invalid; duplicate `amount.1=` field
         let invalid_5 =
-            "zcash:?amount.1=1.234&amount.1=2.345&address.1=tmEZhbWHTpdKMw5it8YDspUXSMGQyFwovpU";
+            "zcash:?amount.1=1.234&amount.1=2.345&address.1=smJWoGdqixeFEbhhLrU1TrXGA6wYAUoeG1J";
         let i5r = TransactionRequest::from_uri(&TEST_NETWORK, &invalid_5);
         assert!(i5r.is_err());
 
         //invalid; memo associated with t-addr
-        let invalid_6 = "zcash:?address=tmEZhbWHTpdKMw5it8YDspUXSMGQyFwovpU&amount=123.456&memo=eyAia2V5IjogIlRoaXMgaXMgYSBKU09OLXN0cnVjdHVyZWQgbWVtby4iIH0&address.1=ztestsapling10yy2ex5dcqkclhc7z7yrnjq2z6feyjad56ptwlfgmy77dmaqqrl9gyhprdx59qgmsnyfska2kez&amount.1=0.789&memo.1=VGhpcyBpcyBhIHVuaWNvZGUgbWVtbyDinKjwn6aE8J-PhvCfjok";
+        let invalid_6 = "zcash:?address=smJWoGdqixeFEbhhLrU1TrXGA6wYAUoeG1J&amount=123.456&memo=eyAia2V5IjogIlRoaXMgaXMgYSBKU09OLXN0cnVjdHVyZWQgbWVtby4iIH0&address.1=ztestsapling10yy2ex5dcqkclhc7z7yrnjq2z6feyjad56ptwlfgmy77dmaqqrl9gyhprdx59qgmsnyfska2kez&amount.1=0.789&memo.1=VGhpcyBpcyBhIHVuaWNvZGUgbWVtbyDinKjwn6aE8J-PhvCfjok";
         let i6r = TransactionRequest::from_uri(&TEST_NETWORK, &invalid_6);
         assert!(i6r.is_err());
 
@@ -916,7 +916,7 @@ mod tests {
 
         // invalid; parameter index too large
         let invalid_10 =
-            "zcash:?amount.10000=1.23&address.10000=tmEZhbWHTpdKMw5it8YDspUXSMGQyFwovpU";
+            "zcash:?amount.10000=1.23&address.10000=smJWoGdqixeFEbhhLrU1TrXGA6wYAUoeG1J";
         let i10r = TransactionRequest::from_uri(&TEST_NETWORK, &invalid_10);
         assert!(i10r.is_err());
     }
