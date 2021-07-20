@@ -1,6 +1,6 @@
 //! Structs for building transactions.
 
-use std::boxed::Box;
+use std::{boxed::Box, sync::mpsc::Sender};
 use std::error;
 use std::fmt;
 use std::marker::PhantomData;
@@ -547,9 +547,18 @@ impl<'a, P: consensus::Parameters, R: RngCore + CryptoRng> Builder<'a, P, R> {
     /// this function, and instead will generate a transaction that will be rejected by
     /// the network.
     pub fn build(
+        self,
+        consensus_branch_id: consensus::BranchId,
+        prover: &impl TxProver,
+    ) -> Result<(Transaction, TransactionMetadata), Error> {
+        self.build_with_progress_notifier(consensus_branch_id, prover, None)
+    }
+
+    pub fn build_with_progress_notifier(
         mut self,
         consensus_branch_id: consensus::BranchId,
         prover: &impl TxProver,
+        progress_notifier: Option<Sender<u32>>,
     ) -> Result<(Transaction, TransactionMetadata), Error> {
         let mut tx_metadata = TransactionMetadata::new();
 
@@ -636,6 +645,8 @@ impl<'a, P: consensus::Parameters, R: RngCore + CryptoRng> Builder<'a, P, R> {
         // Record if we'll need a binding signature
         let binding_sig_needed = !spends.is_empty() || !outputs.is_empty();
 
+        let mut progress= 0u32;
+
         // Create Sapling SpendDescriptions
         if !spends.is_empty() {
             let anchor = self.anchor.expect("anchor was set if spends were added");
@@ -661,6 +672,9 @@ impl<'a, P: consensus::Parameters, R: RngCore + CryptoRng> Builder<'a, P, R> {
                         spend.merkle_path.clone(),
                     )
                     .map_err(|()| Error::SpendProof)?;
+
+                progress += 1;
+                progress_notifier.as_ref().map(|tx| tx.send(progress));
 
                 self.mtx.shielded_spends.push(SpendDescription {
                     cv,
@@ -732,7 +746,6 @@ impl<'a, P: consensus::Parameters, R: RngCore + CryptoRng> Builder<'a, P, R> {
                     dummy_note.rcm(),
                     dummy_note.value,
                 );
-
                 let cmu = dummy_note.cmu();
 
                 let mut enc_ciphertext = [0u8; 580];
@@ -749,6 +762,9 @@ impl<'a, P: consensus::Parameters, R: RngCore + CryptoRng> Builder<'a, P, R> {
                     zkproof,
                 }
             };
+
+            progress += 1;
+            progress_notifier.as_ref().map(|tx| tx.send(progress));
 
             self.mtx.shielded_outputs.push(output_desc);
         }
@@ -803,7 +819,7 @@ impl<'a, P: consensus::Parameters, R: RngCore + CryptoRng> Builder<'a, P, R> {
         // Transparent signatures
         self.transparent_inputs
             .apply_signatures(&mut self.mtx, consensus_branch_id);
-
+            
         Ok((
             self.mtx.freeze().expect("Transaction should be complete"),
             tx_metadata,
